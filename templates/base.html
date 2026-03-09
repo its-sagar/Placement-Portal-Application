@@ -18,7 +18,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary-gradient sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="#">
+            <a class="navbar-brand fw-bold fs-4" href="{{ url_for('auth.login') }}">
 
                 <i class="bi bi-mortarboard-fill me-2"></i>CampusRecruit
             </a>
@@ -30,9 +30,9 @@
                     {% if current_user.is_authenticated %}
                         {% if current_user.role == 'admin' %}
                             <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#">Companies</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#">Students</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#">Drives</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('admin.companies') }}">Companies</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('admin.students') }}">Students</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('admin.drives') }}">Drives</a></li>
                         {% endif %}
                         <li class="nav-item ms-lg-3">
                             <a class="btn btn-outline-light rounded-pill px-4" href="{{ url_for('auth.logout') }}">Logout</a>

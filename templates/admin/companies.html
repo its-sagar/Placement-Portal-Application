@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Companies - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-0">Manage Companies</h2>
+        <p class="text-muted">Review and manage registered companies.</p>
+    </div>
+    <div class="col-md-6 text-md-end">
+        <form action="{{ url_for('admin.companies') }}" method="GET" class="d-flex justify-content-md-end">
+            <div class="input-group w-auto">
+                <input type="text" class="form-control bg-white" name="search" placeholder="Search companies..."
+                    value="{{ search_query }}">
+                <button class="btn btn-outline-secondary bg-white" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Company Name</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Account</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for company in companies %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="fw-semibold text-dark">{{ company.company_profile.company_name }}</div>
+                            <div class="small text-muted">{{ company.email }}</div>
+                        </td>
+                        <td>
+                            <div><i class="bi bi-person text-muted me-1"></i> {{ company.company_profile.hr_contact }}
+                            </div>
+                            {% if company.company_profile.website %}
+                            <a href="{{ company.company_profile.website }}" target="_blank"
+                                class="small text-decoration-none"><i class="bi bi-link-45deg"></i> Website</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if company.is_approved %}
+                            <span class="badge bg-success rounded-pill px-3">Approved</span>
+                            {% else %}
+                            <span class="badge bg-warning text-dark rounded-pill px-3">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if company.is_active %}
+                            <span class="badge bg-primary rounded-pill px-3">Active</span>
+                            {% else %}
+                            <span class="badge bg-danger rounded-pill px-3">Blacklisted</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            {% if not company.is_approved %}
+                            <form action="{{ url_for('admin.approve_company', user_id=company.id) }}" method="POST"
+                                class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-success rounded-circle"
+                                    title="Approve"><i class="bi bi-check-lg"></i></button>
+                            </form>
+                            {% endif %}
+
+                            <form action="{{ url_for('admin.toggle_status', user_id=company.id) }}" method="POST"
+                                class="d-inline">
+                                {% if company.is_active %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle"
+                                    title="Blacklist"><i class="bi bi-slash-circle"></i></button>
+                                {% else %}
+                                <button type="submit" class="btn btn-sm btn-outline-success rounded-circle"
+                                    title="Activate"><i class="bi bi-arrow-counterclockwise"></i></button>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <div class="fs-1 mb-3"><i class="bi bi-building"></i></div>
+                            <h5>No companies found</h5>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

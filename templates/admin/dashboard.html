@@ -1,7 +1,200 @@
 {% extends "base.html" %}
 
-{%block title %}Admin Dashboard - Placement Portal{% endblock %}
+{% block title %}Admin Dashboard - Placement Portal{% endblock %}
 
 {% block content %}
-<h2>Welcome To Admin Dashboard</h2>
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-0">Admin Dashboard</h2>
+        <p class="text-muted">Welcome back, {{ current_user.username }}! Here's what's happening today.</p>
+    </div>
+</div>
+
+<!-- Key Metrics Section -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="card bg-primary-gradient stat-card shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Students</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_students }}</h2>
+                </div>
+                <div class="fs-1 text-white-50"><i class="bi bi-people-fill"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-secondary-gradient stat-card shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Companies</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_companies }}</h2>
+                </div>
+                <div class="fs-1 text-white-50"><i class="bi bi-building"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stat-card shadow-sm h-100"
+            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Drives</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_drives }}</h2>
+                </div>
+                <div class="fs-1 text-white-50"><i class="bi bi-briefcase-fill"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stat-card shadow-sm h-100"
+            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-2">Total Applications</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_applications }}</h2>
+                </div>
+                <div class="fs-1 text-white-50"><i class="bi bi-file-earmark-text"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Action Area -->
+<div class="row g-4">
+    <!-- Pending Approvals -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div
+                class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Pending Company Approvals</h5>
+                {% if pending_companies %}
+                <span class="badge bg-warning text-dark rounded-pill">{{ pending_companies|length }} New</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if pending_companies %}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Email</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for company in pending_companies %}
+                            <tr>
+                                <td><span class="fw-semibold">{{ company.company_profile.company_name }}</span></td>
+                                <td class="text-muted small">{{ company.email }}</td>
+                                <td class="text-end">
+                                    <form action="{{ url_for('admin.approve_company', user_id=company.id) }}"
+                                        method="POST" class="d-inline">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-success rounded-pill px-3">Approve</button>
+                                    </form>
+                                    <form action="{{ url_for('admin.reject_company', user_id=company.id) }}"
+                                        method="POST" class="d-inline">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="text-muted fs-1 mb-3"><i class="bi bi-check-circle"></i></div>
+                    <p class="text-muted mb-0">All companies have been reviewed.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Drives -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div
+                class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Pending Placement Drives</h5>
+                {% if pending_drives %}
+                <span class="badge bg-warning text-dark rounded-pill">{{ pending_drives|length }} New</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if pending_drives %}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for drive in pending_drives %}
+                            <tr>
+                                <td>
+                                    <span class="fw-semibold">{{ drive.job_title }}</span>
+                                </td>
+                                <td class="text-muted small">{{ drive.company.company_profile.company_name }}</td>
+                                <td class="text-end">
+                                    <form action="{{ url_for('admin.approve_drive', drive_id=drive.id) }}" method="POST"
+                                        class="d-inline">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-primary rounded-pill px-3">Approve</button>
+                                    </form>
+                                    <form action="{{ url_for('admin.reject_drive', drive_id=drive.id) }}" method="POST"
+                                        class="d-inline">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="text-muted fs-1 mb-3"><i class="bi bi-briefcase"></i></div>
+                    <p class="text-muted mb-0">No new drives awaiting approval.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="fw-bold mb-4">Platform Overview</h5>
+                <canvas 
+                    id="overviewChart"
+                    height="100"
+                    data-students="{{ total_students }}"
+                    data-companies="{{ total_companies }}"
+                    data-drives="{{ total_drives }}"
+                    data-applications="{{ total_applications }}">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ChartJS Script -->
+<script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+
+
 {% endblock %}
