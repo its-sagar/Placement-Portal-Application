@@ -44,7 +44,7 @@ class StudentProfile(db.Model):
 
 class PlacementDrive(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    company_id = db.Column(db.Integer, db.Foreignkey('user.id'), nunallable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
     job_description = db.Column(db.Text, nullable=False)
     eligibility_criteria = db.Column(db.Text, nullable=False)
@@ -62,7 +62,7 @@ class PlacementDrive(db.Model):
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('student_profile.id'), nullable=False)
-    drive_id = db.Column(db.Integer, db.ForeignKey('placement_drive.id', nullable=False))
+    drive_id = db.Column(db.Integer, db.ForeignKey('placement_drive.id'), nullable=False)
     application_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.String(20), default='Applied')
 
