@@ -26,9 +26,11 @@ def create_app(config_classs='config.Config'):
 
     from routes.auth import auth_bp
     from routes.admin import admin_bp
+    from routes.company import company_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(company_bp, url_prefix='/company')
 
 
     @app.route("/health")

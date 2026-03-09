@@ -27,7 +27,7 @@ class CompanyProfile(db.Model):
     hr_contact = db.Column(db.String(20), nullable=False)
     website = db.Column(db.String(100), nullable=True)
 
-    user = db.relationship('User', backref=db.backref('company_profile'), uselist=False)
+    user = db.relationship('User', backref=db.backref('company_profile', uselist=False))
 
     def __repr__(self):
         return f"companyProfile('{self.company_name}')"
