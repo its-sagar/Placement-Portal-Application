@@ -17,6 +17,11 @@ def create_app(config_classs='config.Config'):
     migrate.init_app(app=app, db=db)
 
 
+    from routes.admin import admin_bp
+
+    app.register_blueprint(admin_bp, url_prefix='/admin')
+
+
     @app.route("/")
     def hello():
         return "Hello, Flask!"

@@ -1,0 +1,101 @@
+/* Google Fonts */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f6fc;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Gradients */
+.bg-primary-gradient {
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+}
+
+.bg-secondary-gradient {
+    background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #4b6cb7;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #364e8a;
+    box-shadow: 0 4px 8px rgba(75, 108, 183, 0.4);
+}
+
+.btn-success {
+    background-color: #0ba360;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #088b51;
+    box-shadow: 0 4px 8px rgba(11, 163, 96, 0.4);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #4b6cb7;
+    box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.25);
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 10px;
+    border-left: 5px solid transparent;
+}
+.alert-success {
+    border-left-color: #0ba360;
+}
+.alert-danger {
+    border-left-color: #dc3545;
+}
+.alert-warning {
+    border-left-color: #ffc107;
+}
+
+/* Dashboard Stat Cards */
+.stat-card {
+    padding: 2rem;
+    border-radius: 15px;
+    color: white;
+}
+
+/* Micro Animations for tables row */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+tbody tr:hover {
+    background-color: rgba(75, 108, 183, 0.05);
+}
