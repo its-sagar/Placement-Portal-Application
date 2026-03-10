@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-0">Student Dashboard</h2>
+        <p class="text-muted">Welcome, {{ current_user.student_profile.full_name }}! Explore available placement drives.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for drive in drives %}
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm border-0 job-card">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="fw-bold text-primary mb-1">{{ drive.job_title }}</h5>
+                        <h6 class="text-muted mb-0"><i class="bi bi-building me-1"></i> {{
+                            drive.company.company_profile.company_name }}</h6>
+                    </div>
+                </div>
+
+                <p class="small text-muted mb-3"
+                    style="display: -webkit-box; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ drive.job_description }}
+                </p>
+
+                <div class="mb-3">
+                    <div class="small fw-semibold mb-1">Eligibility:</div>
+                    <div class="small text-muted bg-light p-2 rounded border">{{ drive.eligibility_criteria }}</div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                    <div class="small text-danger fw-semibold">
+                        <i class="bi bi-clock-history me-1"></i> Deadline: <br> {{
+                        drive.application_deadline.strftime('%b %d, %H:%M') }}
+                    </div>
+
+                    <div>
+                        {% if drive.id in applied_drive_ids %}
+                        <button class="btn btn-sm btn-secondary rounded-pill px-4" disabled>Applied</button>
+                        {% else %}
+                        <form action="{{ url_for('student.apply', drive_id=drive.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4"
+                                onclick="return confirm('Are you sure you want to apply for this role? Ensure your profile and resume are updated.')">Apply
+                                Now</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <div class="text-muted fs-1 mb-3"><i class="bi bi-search"></i></div>
+        <h4 class="text-muted">No active placement drives available right now.</h4>
+        <p class="text-muted">Please check back later.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .job-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .job-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+{% endblock %}

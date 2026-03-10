@@ -36,6 +36,10 @@
                         {% elif current_user.role == 'company' %}
                             <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('company.dashboard') }}">Dashboard</a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('company.create_drive') }}">Post a Job</a></li>
+                        {% elif current_user.role == 'student' %}
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('student.dashboard') }}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('student.history') }}">Applications</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('student.profile') }}">Profile</a></li>
                         {% endif %}
                         <li class="nav-item ms-lg-3">
                             <a class="btn btn-outline-light rounded-pill px-4" href="{{ url_for('auth.logout') }}">Logout</a>
